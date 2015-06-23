@@ -8,7 +8,7 @@ require_relative 'Trie/Trie'
 @@possibleWords = nil
 @@actualWords = Hash.new
 
-
+=begin
 file = File.open("Trie/allWords")
 begin
   while (line = file.readline)
@@ -17,7 +17,7 @@ end
 rescue EOFError
   file.close
 end
-
+=end
 
 
 get '/' do 
@@ -25,7 +25,7 @@ get '/' do
 end
 
 post '/' do
-  
+=begin  
 
   if params[:characters] == 'clear' or params[:characters] == 'space'
     @@input.clear
@@ -47,6 +47,7 @@ post '/' do
 
   end
   erb :form
+=end
 end
 
 
