@@ -1,1 +1,1 @@
-web: bundle exec ruby texter.rb -p $POST
+web: bundle exec ruby config.ru -p $POST

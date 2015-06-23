@@ -8,7 +8,7 @@ require_relative 'Trie/Trie'
 @@possibleWords = nil
 @@actualWords = Hash.new
 
-=begin
+
 file = File.open("Trie/allWords")
 begin
   while (line = file.readline)
@@ -17,7 +17,7 @@ end
 rescue EOFError
   file.close
 end
-=end
+
 
 
 get '/' do 
@@ -25,7 +25,7 @@ get '/' do
 end
 
 post '/' do
-=begin  
+ 
 
   if params[:characters] == 'clear' or params[:characters] == 'space'
     @@input.clear
@@ -47,42 +47,9 @@ post '/' do
 
   end
   erb :form
-=end
+
 end
 
-
-def allPossibleWords
-  #position determines how many cocsecutive positions to to put a char
-  position = 3**(@@input.size-1)
-  wordBuilder = Array.new(3**@@input.size,'')
-  
-  @@input.each do |i|
-    # swap keeps track of when to switch to the next char of the input
-    swap = 0
-    # char keeps track of the current char
-    char = 0
-    
-    (0..((3**@@input.size)-1)).each do |j|
-      
-      if swap == position
-        swap = 0
-        char == 2 ? char = 0 : char +=1 
-      end
-      
-      wordBuilder[j]+= i[char]
- 
-      #if i == @@input[@@input.size]
-      
-      swap+=1
-      
-    
-    end
-
-    position/=3
-  
-  end
-  @@possibleWords = wordBuilder
-end
 
 def allPossiblePermutations
   
@@ -106,7 +73,6 @@ def allPossiblePermutations
     @@possibleWords[i] += @@input.last[currentChar]
     swap+=1
   end
-  p @@possibleWords
 end
 
 
