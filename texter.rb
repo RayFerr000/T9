@@ -8,7 +8,7 @@ require_relative 'Trie/Trie'
 @@possibleWords = nil
 @@actualWords = Hash.new
 
-=begin
+
 file = File.open("Trie/allWords")
 begin
   while (line = file.readline)
@@ -17,7 +17,7 @@ end
 rescue EOFError
   file.close
 end
-=end
+
 
 
 get '/' do 
@@ -26,7 +26,7 @@ end
 
 post '/' do
   
-=begin
+
   if params[:characters] == 'clear' or params[:characters] == 'space'
     @@input.clear
     @@possibleWords = nil
@@ -46,9 +46,7 @@ post '/' do
     return {:words => @@actualWords, :count => @@input.size}.to_json
 
   end
-  '''
   erb :form
-=end
 end
 
 
