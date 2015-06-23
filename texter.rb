@@ -8,7 +8,7 @@ require_relative 'Trie/Trie'
 @@possibleWords = nil
 @@actualWords = Hash.new
 
-
+=begin
 file = File.open("Trie/allWords")
 begin
   while (line = file.readline)
@@ -17,13 +17,13 @@ end
 rescue EOFError
   file.close
 end
-
+=end
 
 
 get '/' do 
   erb :form  
 end
-
+=begin
 post '/' do
  
 
@@ -49,7 +49,7 @@ post '/' do
   erb :form
 
 end
-
+=end
 
 def allPossiblePermutations
   
