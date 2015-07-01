@@ -22,7 +22,8 @@ class Trie
       char = key[nth_char]
       
       if node.next[char] == nil
-        node.next[char] = Node.new  
+        node.next[char] = Node.new
+        node.children << char  
       end   
 
       node = node.next[char]
@@ -41,29 +42,62 @@ class Trie
       
       return nil if node == nil
       
-      return node.data if nth_char == key.length
+      return node if nth_char == key.length
       
       char = key[nth_char]
       node = node.next[char]
       nth_char+=1
     end
   end
+  #Given some particular word, find words that have this word as a prefix up to some additional
+  #number of character N
+  def wordsWithPrefix(prefix, length)
+    node = get(prefix)
+    
+    if node == nil      
+      return nil
+    else
+      wordList = Hash.new
+      if length !=0
+        length+=prefix.length
+      end
+      collectKeys(node, length, prefix, prefix ,wordList)
+      return wordList
+    end
+  end
+  
+  def collectKeys(node, n, word, prefix ,wordList)
+    if n!=0
+      return  if word.length > n 
+    end
+    
+    if node.data != nil and node.data != prefix
+      wordList[word]  =  word 
+    end
+
+    node.children.each do |char|
+      collectKeys(node.next[char],n, word + char,prefix, wordList)
+    end
+  end
+
   #A Node class that represents a R-way Trie node
   class Node
     attr_accessor :data 
     attr_accessor :next
+    attr_accessor :children
     
     def initialize
       @data = nil
       @next = Hash.new
+      @children = Array.new
       ('a'..'z').each do |letter|
         @next[letter] = nil
       end
     
     end
   end
-
 end
+
 
 
 

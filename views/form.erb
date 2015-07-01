@@ -17,48 +17,74 @@
         </div>
       </div>
       <div class='container'>
-        <p> <ins>Hints:</ins> </p>
-        <p>Click <b>clear</b> to empty the text box</p>
-        <p>Click <b>space</b> to start a new word</p>
-        <p>
-      </div>
-      <div>
-        <form onsubmit="return false">
-            <table class="keypad">
-              <tr>
-                  <td><button type='submit' class='btn btn-primary'>1</button></td>
-                  <td><button onclick=enter('abc') class='btn btn-primary' name="number" value="abc">2<br/>abc</button></td>
-                  <td><button onclick=enter('def') class='btn btn-primary' name="number" value="def">3<br/>def</button></td>
-              </tr>
-               
-                <tr>
-                  <td><button onclick=enter('ghi') class='btn btn-primary' name="number" value="ghi">4<br/>ghi</button></td>
-                  <td><button onclick=enter('jkl') class='btn btn-primary' name="number" value="jkl">5<br/>jkl</button></td>
-                  <td><button onclick=enter('mno') class='btn btn-primary' name="number" value="mno">6<br/>mno</button></td>
-                </tr>
-                
-                <tr>
-                  <td><button onclick=enter('pqrs') class='btn btn-primary' name="number" value="pqrs">7<br/>pqrs</button></td>
-                  <td><button onclick=enter('tuv') class='btn btn-primary' name="number" value="tuv">8<br/>tuv</button></td>
-                  <td><button onclick=enter('wxyz') class='btn btn-primary' name="number" value="wxyz">9<br/>wxyz</button></td>
-                </tr>
+        <div class='row'>
+          <div class="col-xs-4 " role="group" align='center' id="actualList" style="margin-right:50px; visibility:hidden;">
+            <h3>Possible words:</h3>
+            <div class="list-group" id="wordList">
+            </div>    
+          </div>
+       
+          <div class="col-xs-2" align='center'>
+            <form onsubmit="return false">
+                <table class="keypad">
+                  <tr>
+                      <td><button type='submit' class='a btn btn-primary'>1</button></td>
+                      <td><button onclick=enter('abc') class='a btn btn-primary' name="number" value="abc">2<br/>abc</button></td>
+                      <td><button onclick=enter('def') class='a btn btn-primary' name="number" value="def">3<br/>def</button></td>
+                  </tr>
+                   
+                    <tr>
+                      <td><button onclick=enter('ghi') class='a btn btn-primary' name="number" value="ghi">4<br/>ghi</button></td>
+                      <td><button onclick=enter('jkl') class='a btn btn-primary' name="number" value="jkl">5<br/>jkl</button></td>
+                      <td><button onclick=enter('mno') class='a btn btn-primary' name="number" value="mno">6<br/>mno</button></td>
+                    </tr>
+                    
+                    <tr>
+                      <td><button onclick=enter('pqrs') class='a btn btn-primary' name="number" value="pqrs">7<br/>pqrs</button></td>
+                      <td><button onclick=enter('tuv') class='a btn btn-primary' name="number" value="tuv">8<br/>tuv</button></td>
+                      <td><button onclick=enter('wxyz') class='a btn btn-primary' name="number" value="wxyz">9<br/>wxyz</button></td>
+                    </tr>
 
-                <tr>
-                  <td><input type="hidden"></td>
-                  <td><button onclick=enter('space') class='btn btn-primary' name="number"value="space">0<br/>space</button></td>
-                  <td><button onclick=enter('clear') class='btn btn-primary' name="number"value="clear">clear</button></td>
-            </table>
-            
-        </form>
-        <div align='center'>
-          <textarea id='input1' rows="4" col="50"></textarea>
+                    <tr>
+                      <td><input type="hidden"></td>
+                      <td><button onclick=enter('space') class='a btn btn-primary' name="number"value="space">0<br/>space</button></td>
+                      <td><button onclick=enter('clear') class='a btn btn-primary' name="number"value="clear">clear</button></td>
+                </table>
+            </form>
+          </div>
+          <div class="col-xs-4" role="group" align='center' id="predictList" style="margin-left:110px; visibility:hidden; height:100px">
+            <h3>Predictions:</h3>
+            <div class="list-group" id="predictions" >
+              
+            </div>
+          </div>           
         </div>
       </div>
-      <div class="container" align='center'>
-        <h2>Possible words:</h2>
-        <div class="list-group" id="wordList">
-          
-            
+      <div class='container'>
+        <div class='row'>
+          <div class="col-xs-4"></div>
+          <div class="col-xs-3" id='alert' style="margin-left:60px; visibility:hidden;">
+            <font color="red">No words found!</font>
+          </div>
+        </div>
+      </div>
+      <div class='container'>
+        <div class='row'>
+          <div class="col-xs-4"></div>
+          <div class="col-xs-1" style="margin-left:60px;">
+            <textarea readonly id='input1' rows="4" col="50"></textarea>
+          </div>
+        </div>
+      </div>
+      <div class='container'>
+        <div class='row'>
+          <div class="col-xs-4" style="margin-left:60px;"></div>
+
+          <div class="col-xs-5" >
+            <p> <ins>Hints:</ins> </p>
+            <p>Click <b>clear</b> to empty the text box</p>
+            <p>Click <b>space</b> to start a new word</p>
+          </div>        
         </div>
       </div>
     </body>
@@ -74,26 +100,57 @@
           async : true,
           data : {characters : chars },
           success:function(response){
+            $('#actualList').css("visibility", "hidden");
+            $('#predictList').css("visibility", "hidden");
+            $('#alert').css("visibility", "hidden");
             $('#wordList').empty();
+            $('#predictions').empty();
+            
             if (response.clear){
               $('#input1').empty();
               currentWords = '';
             }
-            if (response.space)
+            if (response.space && selectedWord != ''){
               currentWords = currentWords + ' ' + selectedWord
-            
-            for (var key in response.words){              
-              if (key.length == response.count){                
-                if ($('#wordList').children()[0] == undefined){                 
-                  button = "<a href='' class='list-group-item active' onclick='selectWord(this.id);return false;' id='"+ key + "'>" + key + "</a>"; 
-                  selectedWord = key;
+            }
+            if (response.alert){
+              $('#alert').css("visibility", "visible");
+              $('#input1').text(currentWords);
+              selectedWord = '';
+            }
+            if(Object.keys(response.words).length > 0){
+              
+              $('#actualList').css("visibility", "visible");
+              for (var key in response.words){              
+                if (key.length == response.count){                
+                  if ($('#wordList').children()[0] == undefined){                 
+                    //button = "<a href='' class='list-group-item active' onclick='selectWord(this.id);return false;' id='"+ key + "'>" + key + "</a>"; 
+                    button = "<button type='button' class='btn btn-primary btn-round-sm' onclick='selectWord(this.id);return false;' value='"+ key + "' id='"+ key + "'>" + key + "</button>"
+                    selectedWord = key;
+                  }
+                  else
+                    //button = "<a href='' class='list-group-item' onclick='selectWord(this.id);return false;' id='"+ key + "'>" + key + "</a>";
+                    button = "<button type='button' class='btn btn-default btn-round-sm' onclick='selectWord(this.id);return false;' value='"+ key + "' id='"+ key + "'>" + key + "</button>"                 
+                  $('#wordList').append(button);
                 }
-                else
-                  button = "<a href='' class='list-group-item' onclick='selectWord(this.id);return false;' id='"+ key + "'>" + key + "</a>";                 
-                $('#wordList').append(button);
+              }
+              $('#input1').text(currentWords + ' '+ $('#wordList').children(1)[0].value);
+            }
+            if(Object.keys(response.predicted).length > 0){
+
+              $('#predictList').css("visibility", "visible");
+              for (var key in response.predicted){
+                //button = "<a href='' class='list-group-item' onclick='selectWord(this.id);return false;' id='"+ key + "'>" + key + "</a>";
+                button = "<button type='button' class='btn btn-default btn-round-sm' onclick='selectWord(this.id);return false;' value='"+ key + "' id='"+ key + "'>" + key + "</button>"
+                $('#predictions').append(button);
+                
+                if(Object.keys(response.words).length == 0){
+                  $('#input1').text(currentWords + ' '+ $('#predictions').children(1)[0].value);
+                  $('#'+ $('#predictions').children(1)[0].text).addClass('active')
+                }
               }
             }
-            $('#input1').text(currentWords + ' '+ $('#wordList').children(1)[0].text);
+            
             
           },
           error:function(done){
@@ -103,8 +160,8 @@
       }
 
       function selectWord(id){
-        $('#' + id).addClass('active');
-        $('#' + selectedWord).removeClass('active');
+        $('#' + id).addClass('btn-primary');
+        $('#' + selectedWord).removeClass('btn-primary');
         selectedWord = id;
         $('#input1').text(currentWords + ' '+ $('#' + id).text());
       }

@@ -2,14 +2,17 @@
 
     margin-right:auto;
     margin-left:auto;
-    
-
-
 }
 
-.btn {
+
+.a {
 	border-radius:0px;
 	width:70px;
 	height:70px;
 }
+
+.btn-round-sm{
+border-radius: 15px;
+}
+
 
