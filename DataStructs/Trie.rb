@@ -49,8 +49,8 @@ class Trie
       nth_char+=1
     end
   end
-  #Given some particular word, find words that have this word as a prefix up to some additional
-  #number of character N
+  #Given some particular string, perform a DFS to find words that have this string as a prefix.
+  #The length signifys. If length == 0, then this will perform
   def wordsWithPrefix(prefix, length)
     node = get(prefix)
     

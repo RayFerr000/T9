@@ -29,10 +29,14 @@ class WebApp < Sinatra::Base
       settings.cache.input << params[:characters]
       settings.cache.predicted.clear
       settings.cache.actualWords.clear
+      
       allPossiblePermutations
       actualAndPredictedWords(2)
       
-      if settings.cache.predicted.size == 0 and settings.cache.input.size >2
+      if settings.cache.predicted.size == 0 and settings.cache.actualWords.size == 0 and settings.cache.input.size >2
+        #If both predicted and actualWords is empty, the current string might be a couple of characters away from completion. 
+        #If a there is a node that corresponds to the current sequence of characters, perform a full DFS on it to see if
+        #and words can come from this combination of characters.
          actualAndPredictedWords(0)
          if settings.cache.predicted.size == 0
           return {:alert => true}.to_json
