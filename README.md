@@ -1,6 +1,6 @@
 # T9 Predective Texter
 
-A simple web application that somewhat emulates the T9 texter from all those years ago. While there is no reason for anyone to ever use this, it was really fun and interesting to create.
+A simple web application that somewhat emulates the T9 texter from all those years ago. While there is no reason for anyone to ever use this; It was fun to emulate.
 
 ###Tech Used
 
